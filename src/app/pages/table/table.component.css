@@ -1,3 +1,10 @@
-th{
-  background-color: red;
+.mat-mdc-header-cell {
+  background: #E2E2E2!important;
+}
+
+/* your-component.component.css */
+
+.table-container {
+  height: 400px; /* Set your desired height */
+  overflow-y: auto;
 }

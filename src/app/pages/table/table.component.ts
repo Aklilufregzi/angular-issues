@@ -9,6 +9,8 @@ import { RouterModule } from '@angular/router';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { catchError, retry } from 'rxjs';
 export interface Issue {
   title: string;
   createdOn: string;
@@ -27,6 +29,7 @@ export interface Issue {
     RouterModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    FlexLayoutModule
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css',
@@ -74,38 +77,41 @@ export class TableComponent implements AfterViewInit {
   }
 
   populateTable(page: number, sort?: string, order?: string ) {
-    this.issueDataService.getIssues(page, sort, order).subscribe((data: any) => {
+    this.issueDataService.getIssues(page, sort, order)
+      .pipe(
+        retry(3), // Retry the request up to 3 times
+        catchError((error: any) => {
+          this.errorMessage = error.error.message;
+          console.error(error);
 
+          this._snackBar.open(this.errorMessage, 'Dismiss', {
+            duration: 5000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            politeness: 'assertive',
+          });
 
-      this.issues = data;
-      let tempData = [];
-
-      data.items.forEach((element: any) => {
-        tempData.push({
-          title: element.title,
-          createdOn: element.created_at,
-          updatedOn: element.updated_at,
-        });
-      });
-      this.dataSource = new MatTableDataSource(tempData);
-      this.dataSource.sort = this.sort;
-
-      this.pageSize = data.total_count;
-
-      console.log(this.dataSource.sort);
-    }, (error: any) => {
-      this.errorMessage = error.error.message;
-
-      console.log(error)
-
-      this._snackBar.open(this.errorMessage, 'Dismiss', {
-        duration: 5000,
-        verticalPosition: 'top',
-        horizontalPosition: 'center',
-        politeness: 'assertive',
+          throw error; // Rethrow the error after handling
         })
+      )
+      .subscribe((data: any) => {
+        // Your success logic here
+        this.issues = data;
+        let tempData = [];
 
-    }
-    );
+        data.items.forEach((element: any) => {
+          tempData.push({
+            title: element.title,
+            createdOn: element.created_at,
+            updatedOn: element.updated_at,
+          });
+        });
+        this.dataSource = new MatTableDataSource(tempData);
+        this.dataSource.sort = this.sort;
+
+        this.pageSize = data.total_count;
+
+        console.log(this.dataSource.sort);
+      });
   }
 }
