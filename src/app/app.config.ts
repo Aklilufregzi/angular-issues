@@ -3,9 +3,18 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
-import { provideAnimations, provideNoopAnimations } from '@angular/platform-browser/animations';
+import {
+  provideAnimations,
+  provideNoopAnimations,
+} from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideClientHydration(), provideNoopAnimations(), provideHttpClient(), provideAnimations()]
+  providers: [
+    provideRouter(routes),
+    provideClientHydration(),
+    provideNoopAnimations(),
+    provideHttpClient(),
+    provideAnimations(),
+  ],
 };

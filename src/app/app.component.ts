@@ -1,8 +1,5 @@
-import { Component, } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {  RouterOutlet } from '@angular/router';
-
-
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +7,7 @@ import {  RouterOutlet } from '@angular/router';
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-
 })
 export class AppComponent {
   title = 'ng-test';
-
-
 }

@@ -29,7 +29,7 @@ export interface Issue {
     RouterModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css',
@@ -43,20 +43,20 @@ export class TableComponent implements AfterViewInit {
   displayedColumns: string[] = ['createdOn', 'updatedOn', 'title'];
   errorMessage: string;
 
-  constructor(private _liveAnnouncer: LiveAnnouncer, private _snackBar: MatSnackBar) {}
+  constructor(
+    private _liveAnnouncer: LiveAnnouncer,
+    private _snackBar: MatSnackBar
+  ) {}
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
   }
   ngOnInit() {
-
     this.populateTable(1);
-
   }
 
   sortIssues(sortState: Sort) {
-
-    let sort = sortState.active === 'createdOn'? 'created': 'updated'
+    let sort = sortState.active === 'createdOn' ? 'created' : 'updated';
 
     this.populateTable(1, sortState.active, sortState.direction);
 
@@ -65,19 +65,17 @@ export class TableComponent implements AfterViewInit {
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
-
-
   }
 
   handlePagination(event: any) {
-
     this.populateTable(event.pageIndex + 1);
   }
 
-  populateTable(page: number, sort?: string, order?: string ) {
-    this.issueDataService.getIssues(page, sort, order)
+  populateTable(page: number, sort?: string, order?: string) {
+    this.issueDataService
+      .getIssues(page, sort, order)
       .pipe(
-        retry(3), // Retry the request up to 3 times
+        retry(3),
         catchError((error: any) => {
           this.errorMessage = error.error.message;
           console.error(error);
@@ -89,11 +87,10 @@ export class TableComponent implements AfterViewInit {
             politeness: 'assertive',
           });
 
-          throw error; // Rethrow the error after handling
+          throw error;
         })
       )
       .subscribe((data: any) => {
-        // Your success logic here
         this.issues = data;
         let tempData = [];
 
@@ -108,7 +105,6 @@ export class TableComponent implements AfterViewInit {
         this.dataSource.sort = this.sort;
 
         this.pageSize = data.total_count;
-
       });
   }
 }

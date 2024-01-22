@@ -2,9 +2,7 @@
   background: #E2E2E2!important;
 }
 
-/* your-component.component.css */
-
 .table-container {
-  height: 400px; /* Set your desired height */
+  height: 80vh;
   overflow-y: auto;
 }
