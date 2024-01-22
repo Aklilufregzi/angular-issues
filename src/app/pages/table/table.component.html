@@ -30,7 +30,10 @@
               Created On
             </th>
             <td mat-cell *matCellDef="let element">
-              {{ element.createdOn | date : "MM-dd-yy hh:mm:ss a" }}
+              <p>
+                {{ element.createdOn | date : "MM-dd-yy" }} <br />
+                {{ element.createdOn | date : "h:mm:ss a" }}
+              </p>
             </td>
           </ng-container>
 
@@ -39,7 +42,10 @@
               Updated On
             </th>
             <td mat-cell *matCellDef="let element">
-              {{ element.updatedOn | date : "MM-dd-yy hh:mm:ss a" }}
+              <p>
+                {{ element.updatedOn | date : "MM-dd-yy" }} <br />
+                {{ element.updatedOn | date : "h:mm:ss a" }}
+              </p>
             </td>
           </ng-container>
 
