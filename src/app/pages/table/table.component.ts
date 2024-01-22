@@ -65,13 +65,11 @@ export class TableComponent implements AfterViewInit {
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
-    console.log(sortState);
 
 
   }
 
   handlePagination(event: any) {
-    console.log(event);
 
     this.populateTable(event.pageIndex + 1);
   }
@@ -111,7 +109,6 @@ export class TableComponent implements AfterViewInit {
 
         this.pageSize = data.total_count;
 
-        console.log(this.dataSource.sort);
       });
   }
 }
